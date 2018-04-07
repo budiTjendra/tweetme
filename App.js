@@ -9,8 +9,10 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Button
 } from 'react-native';
+import Router from './src/Router';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,23 +21,24 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+
 type Props = {};
+
 export default class App extends Component<Props> {
+
+  onButtonPress(){
+     console.log('onPress');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-        <Text>
-          IOS
-        </Text>
+        <Button
+          onPress={this.onButtonPress.bind(this)}
+          title="Sign in"
+          color="#841584"
+          accessibilityLabel="Sign in to proceed"
+        />
       </View>
     );
   }

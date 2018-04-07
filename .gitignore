@@ -9,3 +9,6 @@ Debug*/Debug*\ Libs
 *.obsolete
 **/node_modules
 **/ios/build
+**/android/app/build
+**/.idea
+.eslintrc
