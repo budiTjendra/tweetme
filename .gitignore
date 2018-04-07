@@ -6,6 +6,6 @@ Builds*
 Debug*.exe
 Debug*/Debug*.exe
 Debug*/Debug*\ Libs
-*.rbuistate
-*.xojo_uistate
 *.obsolete
+**/node_modules
+**/ios/build
