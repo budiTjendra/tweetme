@@ -7,10 +7,20 @@ import {
   StyleSheet,
   Button
 } from 'react-native';
+import OAuthManager from 'react-native-oauth';
 
 export default class Login extends Component {
   onButtonPress(){
-     console.log('onPress');
+      const manager = new OAuthManager('tweetme')
+      manager.configure({
+        twitter: {
+          consumer_key: 'gA3utEODTIVk2DbErIA7xuHRJ',
+          consumer_secret: 'G8AwgOxoi0KwL5vh2DY3fUELgF50qOzm6ebF0ctYAtlFGUVbGx'
+        }
+      });
+      manager.authorize('twitter')
+      .then(resp => console.log(resp))
+      .catch(err => console.log(err));
   }
 
   render() {
