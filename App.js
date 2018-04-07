@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import Login from './src/Login';
+import LoginForm from './src/LoginForm';
 import reducers from './src/reducers';
 
 type Props = {};
@@ -20,7 +20,7 @@ export default class App extends Component<Props> {
   render() {
     return (
       <Provider store= {createStore(reducers)}>
-        <Login />
+        <LoginForm />
       </Provider>
     );
   }
