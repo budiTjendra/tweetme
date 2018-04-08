@@ -10,18 +10,29 @@ import {
 import Home from './Home';
 import LoginForm from './LoginForm';
 import OAuthManager from 'react-native-oauth';
+import { connect } from 'react-redux';
+import { getAuthorizedAccount } from './actions';
 
+class RouterComponent extends Component {
+  componentDidMount(){
+    this.props.getAuthorizedAccount();
+    console.log('component did mount');
+  }
 
-export default class RouterComponent extends Component {
+  componentDidUpdate(){
+    console.log('component did update');
+  }
 
   render() {
     const manager = new OAuthManager('tweetme');
 
     manager.savedAccounts()
       .then(resp => {
-        console.log('account list: ', resp.accounts);
+        console.log('Router: account list: ', resp.accounts);
       })
 
+    console.log('======');
+    console.log(this.props);
 
     return (
       <Router>
@@ -38,6 +49,8 @@ export default class RouterComponent extends Component {
   }
 }
 
+
+export default connect(null, { getAuthorizedAccount } )(RouterComponent);
 
 const styles = StyleSheet.create({
   container: {

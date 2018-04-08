@@ -1,11 +1,15 @@
 import OAuthManager from 'react-native-oauth';
 import { Actions } from 'react-native-router-flux';
+import {
+  WAIT_FOR_LOGIN,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED,
+  GET_AUTHORIZED_ACCOUNT
+}from './types';
 
 export const signIn = () => {
     return (dispatch) => {
-      dispatch({type: 'wait_for_login'});
-
-
+      dispatch({type: WAIT_FOR_LOGIN});
         const manager = new OAuthManager('tweetme');
 
         manager.configure({
@@ -17,28 +21,61 @@ export const signIn = () => {
         manager.authorize('twitter')
         .then(response  =>
         {
-            loginUserSuccess(dispatch, response);
+            console.log('dispatch loginAccountSuccess');
+            loginAccountSuccess(dispatch, response);
         })
         .catch(err => {
-            loginUserFailed(dispath, err);
+            console.log('dispatch loginAccountFailed');
+            loginAccountFailed(dispatch, err);
         });
-
-
     };
 };
 
-
-const loginUserSuccess = (dispatch, user ) => {
+const loginAccountSuccess = (dispatch, resp ) => {
    dispatch({
-      type: 'login_success',
-      payload:user
+      type: LOGIN_SUCCESS,
+      payload:resp
    });
    Actions.main();
-}
+};
 
-const loginUserFailed = (dispath, err) => {
-  dispath({
-      type: 'login_failed',
+const loginAccountFailed = (dispatch, err) => {
+  dispatch({
+      type: LOGIN_FAILED,
       payload: err
   });
-}
+};
+
+export const getAuthorizedAccount = () => {
+    console.log('getAuthorizedAccount');
+    const manager = new OAuthManager('tweetme');
+    /*
+    manager.savedAccounts()
+      .then(resp => {
+        console.log('action: account list: ', resp.accounts);
+      })*/
+
+      return (dispatch) => {
+        manager.savedAccounts()
+          .then(resp => {
+            console.log('action: account list size: ', resp.accounts.length);
+            console.log('action: account list: ', resp.accounts);
+            if (resp.accounts.length === 0){
+              loginAccountFailed(dispatch, resp);
+            }else{
+              loginAccountSuccess(dispatch, resp);
+            }
+
+
+          })
+      };
+
+    /*
+    return {
+      type: GET_AUTHORIZED_ACCOUNT,
+      payload: 'test'
+    };*/
+
+
+
+};

@@ -44,18 +44,18 @@ class LoginForm extends Component {
 
 const mapStateToProps = ({ oauth }) => {
 
-  if (oauth.user === ""){
+  if (oauth.account === ""){
 
   }else{
-    const { status, response } = oauth.user;
-    const { authorized } = response;
+    //const { status, response } = oauth.account;
+    //const { authorized } = response;
 
-    console.log('status:' + status);
-    console.log('authorized:' + authorized);
+    //console.log('status:' + status);
+    //console.log('authorized:' + authorized);
   }
 
   console.log('oauth:' + oauth);
-  console.log('oauth.user:' + oauth.user);
+  //console.log('oauth.account:' + oauth.account);
   return { oauth };
 };
 
