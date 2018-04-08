@@ -54,7 +54,6 @@ class TweetAddDialog extends Component {
 }
 
 const mapStateToProps = ({tweet}) => {
-
    return { tweet };
 };
 

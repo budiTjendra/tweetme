@@ -7,6 +7,7 @@ import {
   MESSAGE_CHANGED,
   ADD_MESSAGE_SUCCESS,
   ADD_MESSAGE_FAILED,
+  RESET_ERROR
 } from '../actions/types';
 
 console.log('check GET_USER_TIMELINE: ' + GET_USER_TIMELINE);
@@ -17,15 +18,18 @@ console.log('check ADD_MESSAGE: ' + ADD_MESSAGE);
 console.log('check MESSAGE_CHANGED: ' + MESSAGE_CHANGED);
 console.log('check ADD_MESSAGE_SUCCESS: ' + ADD_MESSAGE_SUCCESS);
 console.log('check ADD_MESSAGE_FAILED: ' + ADD_MESSAGE_FAILED);
+console.log('check RESET_ERROR: ' + RESET_ERROR);
 
 const INITIAL_STATE = {
   timeline: [],
   isShowTweetDialog: false,
   message: '',
+  refreshTimeline: false,
   loading: {
     isLoading: false,
     loadingType: ''
-  }
+  },
+  err: ''
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -39,6 +43,7 @@ export default (state = INITIAL_STATE, action) => {
           ...state,
           err: '',
           timeline: action.payload,
+          refreshTimeline: false,
           loading:{
             isLoading:false,
             loadingType: ''
@@ -50,18 +55,20 @@ export default (state = INITIAL_STATE, action) => {
           loading:{
             isLoading:false,
             loadingType: ''
-          }          
+          }
         };
      case SHOW_ADD_TWEET_DIALOG:
         return { ...state, isShowTweetDialog: action.payload};
      case MESSAGE_CHANGED:
         return { ...state, message: action.payload};
      case ADD_MESSAGE:
-        return { ...state, message: ''};
+        return { ...state, message: '' };
      case ADD_MESSAGE_SUCCESS:
-        return { ...state, message: '', isShowTweetDialog: false};
+        return { ...state, message: '', isShowTweetDialog: false, refreshTimeline: true};
      case ADD_MESSAGE_FAILED:
-        return { ...state, err: 'failed post message to twitter!', loading: false};
+        return { ...state, err: action.payload, loading: false, refreshTimeline: false};
+     case RESET_ERROR:
+        return { ...state, err:'' };
      default:
         return state;
    }

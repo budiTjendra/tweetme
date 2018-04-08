@@ -13,8 +13,16 @@ import {
   ADD_MESSAGE,
   ADD_MESSAGE_SUCCESS,
   ADD_MESSAGE_FAILED,
-  LOADING
+  LOADING,
+  RESET_ERROR
 }from './types';
+
+export const resetError = ()=>{
+   console.log('action: resetError');
+   return {
+     type: RESET_ERROR
+   }
+};
 
 export const addMessage = (text) => {
   return(dispatch) =>{
@@ -32,9 +40,10 @@ export const addMessage = (text) => {
       .then(resp => {
         console.log('Data ->', resp.data);
         addMessageSuccess(dispatch);
+        onGetUserTimeline(dispatch);
       })
-      .catch(resp => {
-        addMessageFailed(dispatch);
+      .catch(err => {
+        addMessageFailed(dispatch, err.msg);
       });
   };
 };
@@ -47,10 +56,11 @@ export const addMessageSuccess = (dispatch) => {
 
 }
 
-const addMessageFailed = (dispatch) => {
+const addMessageFailed = (dispatch, err) => {
   console.log('action: addMessageFailed');
   dispatch({
-    type: ADD_MESSAGE_FAILED
+    type: ADD_MESSAGE_FAILED,
+    payload: err
   });
 }
 
@@ -86,25 +96,31 @@ export const getUserTimeline = () => {
    console.log('action: getUserTimeline');
 
    return (dispatch) => {
-     dispatch({
-       type: GET_USER_TIMELINE
-     });
-
-     const manager = new OAuthManager('tweetme');
-     const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
-
-     manager
-       .makeRequest('twitter', userTimelineUrl)
-       .then(resp => {
-          console.log('onGetUserTimelineSuccess');
-          console.log('Action: getUserTimeLine: Data ->', resp.data );
-          onGetUserTimelineSuccess(dispatch, resp.data);
-       })
-       .catch(err => {
-         onGetUserTimelineFailed(dispatch, 'failed in getUserTimeline');
-       });
+      onGetUserTimeline(dispatch);
    };
 
+};
+
+
+const onGetUserTimeline = (dispatch) =>
+{
+  dispatch({
+    type: GET_USER_TIMELINE
+  });
+
+  const manager = new OAuthManager('tweetme');
+  const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+
+  manager
+    .makeRequest('twitter', userTimelineUrl)
+    .then(resp => {
+       console.log('onGetUserTimelineSuccess');
+       console.log('Action: getUserTimeLine: Data ->', resp.data );
+       onGetUserTimelineSuccess(dispatch, resp.data);
+    })
+    .catch(err => {
+      onGetUserTimelineFailed(dispatch, 'failed in getUserTimeline');
+    });
 };
 
 const onGetUserTimelineSuccess = (dispatch, data) => {
