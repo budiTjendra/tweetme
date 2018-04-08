@@ -5,34 +5,42 @@ import {
   View,
   Text,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import OAuthManager from 'react-native-oauth';
 import { getUserTimeline } from './actions';
+import { Layout, Section } from './components/common';
 
 class Home extends Component {
   componentDidMount(){
       console.log('home: componentDidMount',this.props.getUserTimeline());
 
-      //this.props.getUserTimeline();
+      this.props.getUserTimeline();
   }
 
   renderTimeline(){
+     console.log('test:',this.props.tweet.timeline);
      return this.props.tweet.timeline.map(
-       item => <Text> { item.text } </Text>
+        item =>
+          <Section key={item.id}>
+            <Text> { item.text } </Text>
+          </Section>
+
      );
   }
 
   render() {
     const { text } = this.props.tweet;
     console.log('home: props:', this.props);
-    console.log('home: text:', text);
-
 
     return (
-      <View>
-        {this.renderTimeline()}
-      </View>
+      <Layout>
+        <ScrollView>
+          {this.renderTimeline()}
+        </ScrollView>
+
+      </Layout>
     );
 
 

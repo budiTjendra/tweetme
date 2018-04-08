@@ -17,10 +17,12 @@ const Button = (props) => {
   );
 };
 
-export default Button;
+
 
 const styles = {
   default: {
     backgroundColor: 'red',
   },
 };
+
+export { Button };

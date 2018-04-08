@@ -7,7 +7,7 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
-import Home from './Home';
+import HomePage from './HomePage';
 import LoginForm from './LoginForm';
 import OAuthManager from 'react-native-oauth';
 import { connect } from 'react-redux';
@@ -31,7 +31,12 @@ class RouterComponent extends Component {
             <Scene key="login" component={LoginForm} title="Please Login"/>
           </Scene>
           <Scene key="main">
-            <Scene key="home" component={Home} title='Timeline'/>
+            <Scene
+                rightTitle="Post Tweet"
+                onRight={ () => { console.log('right') }}
+                key="home"
+                component={HomePage}
+                title='Timeline'/>
           </Scene>
         </Scene>
       </Router>

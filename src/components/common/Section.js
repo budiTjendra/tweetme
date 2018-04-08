@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 const Section = (props) => {
-  const sectionStyle = props.noSkin ? styles.noSkinLayoutStyle : styles.layoutStyle;  
+  const sectionStyle = props.noSkin ? styles.noSkinLayoutStyle : styles.layoutStyle;
   return (
     <View style={sectionStyle}>
       { props.children }
@@ -14,7 +14,7 @@ const Section = (props) => {
   );
 };
 
-export default Section;
+
 
 const styles = {
   layoutStyle: {
@@ -37,3 +37,5 @@ const styles = {
     padding: 10,
   }
 };
+
+export { Section };

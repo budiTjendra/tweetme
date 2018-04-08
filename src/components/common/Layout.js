@@ -11,7 +11,7 @@ const Layout = (props) => (
   </View>
 );
 
-export default Layout;
+export { Layout };
 
 const styles = {
   container: {
