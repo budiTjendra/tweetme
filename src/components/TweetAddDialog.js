@@ -20,20 +20,14 @@ class TweetAddDialog extends Component {
       addMessage(tweet.message);
     }
 
-
-
     render (){
       console.log('TweetAddDialog: props:', this.props);
-
       return(
 
         <Modal
           animationType="slide"
           transparent={false}
-          visible={this.props.tweet.isShowTweetDialog}
-          onRequestClose={() => {
-            alert('Modal has been closed.');
-          }}>
+          visible={this.props.tweet.isShowTweetDialog}>
 
           <Layout style={styles.container}>
             <Section noSkin >

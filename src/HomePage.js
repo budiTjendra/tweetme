@@ -7,18 +7,36 @@ import {
   StyleSheet,
   ScrollView,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  RefreshControl,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import OAuthManager from 'react-native-oauth';
-import { getUserTimeline, showAddTweetDialog } from './actions';
+import { getUserTimeline, showAddTweetDialog, addMessageSuccess } from './actions';
 import { Layout, Section } from './components/common';
 import TweetAddDialog from './components/TweetAddDialog';
 
+
 class Home extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      refreshing: false,
+    };
+  }
+
+  _onRefresh(){
+    this.setState({ refreshing: true });
+
+    const { getUserTimeline } = this.props;
+    getUserTimeline();
+  }
+
   componentDidMount(){
-      console.log('home: componentDidMount: ',this.props);
-      this.props.getUserTimeline();
+    console.log('home: componentDidMount: ',this.props);
+    const { getUserTimeline } = this.props;
+    getUserTimeline();
   }
 
   renderTimeline(){
@@ -32,14 +50,27 @@ class Home extends Component {
      );
   }
 
+  onTweetDialogClosed(){
+    Alert.alert('closed!');
+    console.log('closed')
+  }
+
 
   render() {
-    const { text } = this.props.tweet;
     console.log('home: props:', this.props);
+    console.log('home: isLoading', this.props.tweet.loading.isLoading);
+
     return (
       <Layout>
-          <TweetAddDialog />
-        <ScrollView>
+        <TweetAddDialog }/>
+
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+                refreshing={this.props.tweet.loading.isLoading}
+                onRefresh={this._onRefresh.bind(this)}
+            />}
+        >
           {this.renderTimeline()}
         </ScrollView>
 

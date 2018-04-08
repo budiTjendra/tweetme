@@ -5,13 +5,15 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   GET_AUTHORIZED_ACCOUNT,
+  GET_USER_TIMELINE,
   GET_USER_TIMELINE_SUCCESS,
   GET_USER_TIMELINE_FAILED,
   SHOW_ADD_TWEET_DIALOG,
   MESSAGE_CHANGED,
   ADD_MESSAGE,
   ADD_MESSAGE_SUCCESS,
-  ADD_MESSAGE_FAILED
+  ADD_MESSAGE_FAILED,
+  LOADING
 }from './types';
 
 export const addMessage = (text) => {
@@ -37,11 +39,12 @@ export const addMessage = (text) => {
   };
 };
 
-const addMessageSuccess = (dispatch) => {
+export const addMessageSuccess = (dispatch) => {
   console.log('action: addMessageSuccess');
   dispatch({
     type: ADD_MESSAGE_SUCCESS
   });
+
 }
 
 const addMessageFailed = (dispatch) => {
@@ -83,6 +86,9 @@ export const getUserTimeline = () => {
    console.log('action: getUserTimeline');
 
    return (dispatch) => {
+     dispatch({
+       type: GET_USER_TIMELINE
+     });
 
      const manager = new OAuthManager('tweetme');
      const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
