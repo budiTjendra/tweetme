@@ -13,29 +13,18 @@ import { connect } from 'react-redux';
 
 class LoginForm extends Component {
   onButtonPress(){
-    const manager = new OAuthManager('tweetme')
-
-    manager.configure({
-      twitter: {
-        consumer_key: 'gA3utEODTIVk2DbErIA7xuHRJ',
-        consumer_secret: 'G8AwgOxoi0KwL5vh2DY3fUELgF50qOzm6ebF0ctYAtlFGUVbGx'
-      }
-    });
-    manager.authorize('twitter')
-    .then(response  =>
-    {
-        console.log(response);
-        this.props.signIn(response);
-    })
-    .catch(err => console.log(err));
+      this.props.signIn();
   }
 
   render() {
-    if (typeof signIn === 'function' ){
-        console.log('function') ;
-    }else{
-        console.log('object');
-    }
+    {/*
+      if (typeof signIn === 'function' ){
+          console.log('function') ;
+      }else{
+          console.log('object');
+      }
+    */}
+
     console.log(this.props);
 
     return (
@@ -61,12 +50,12 @@ const mapStateToProps = ({ oauth }) => {
     const { status, response } = oauth.user;
     const { authorized } = response;
 
-
     console.log('status:' + status);
     console.log('authorized:' + authorized);
   }
 
   console.log('oauth:' + oauth);
+  console.log('oauth.user:' + oauth.user);
   return { oauth };
 };
 
