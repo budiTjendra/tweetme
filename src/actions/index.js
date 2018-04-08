@@ -8,13 +8,53 @@ import {
   GET_USER_TIMELINE_SUCCESS,
   GET_USER_TIMELINE_FAILED,
   SHOW_ADD_TWEET_DIALOG,
-  MESSAGE_CHANGED
+  MESSAGE_CHANGED,
+  ADD_MESSAGE,
+  ADD_MESSAGE_SUCCESS,
+  ADD_MESSAGE_FAILED
 }from './types';
 
+export const addMessage = (text) => {
+  return(dispatch) =>{
+    const encodedMessage = encodeURIComponent(text);
+    const postTweetStatusUrl = `https://api.twitter.com/1.1/statuses/update.json?status=${encodedMessage}`;
+
+    const manager = new OAuthManager('tweetme');
+    addMessageSuccess(dispatch);
+
+    manager
+      .makeRequest('twitter', postTweetStatusUrl ,
+        {
+          method: "post"
+        })
+      .then(resp => {
+        console.log('Data ->', resp.data);
+        addMessageSuccess(dispatch);
+      })
+      .catch(resp => {
+        addMessageFailed(dispatch);
+      });
+  };
+};
+
+const addMessageSuccess = (dispatch) => {
+  console.log('action: addMessageSuccess');
+  dispatch({
+    type: ADD_MESSAGE_SUCCESS
+  });
+}
+
+const addMessageFailed = (dispatch) => {
+  console.log('action: addMessageFailed');
+  dispatch({
+    type: ADD_MESSAGE_FAILED
+  });
+}
 
 export const messageChanged = (text) => {
-  console.log('action: messageChanged', text);
-  
+  console.log('action: messageChanged' + text);
+
+
   return {
     type: MESSAGE_CHANGED,
     payload: text

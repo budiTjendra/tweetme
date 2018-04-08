@@ -3,7 +3,9 @@ import {
   GET_USER_TIMELINE_FAILED,
   SHOW_ADD_TWEET_DIALOG,
   ADD_MESSAGE,
-  MESSAGE_CHANGED
+  MESSAGE_CHANGED,
+  ADD_MESSAGE_SUCCESS,
+  ADD_MESSAGE_FAILED
 } from '../actions/types';
 
 console.log('check GET_USER_TIMELINE_SUCCESS: ' + GET_USER_TIMELINE_SUCCESS);
@@ -11,6 +13,8 @@ console.log('check GET_USER_TIMELINE_FAILED: ' + GET_USER_TIMELINE_FAILED);
 console.log('check SHOW_ADD_TWEET_DIALOG: ' + SHOW_ADD_TWEET_DIALOG);
 console.log('check ADD_MESSAGE: ' + ADD_MESSAGE);
 console.log('check MESSAGE_CHANGED: ' + MESSAGE_CHANGED);
+console.log('check ADD_MESSAGE_SUCCESS: ' + ADD_MESSAGE_SUCCESS);
+console.log('check ADD_MESSAGE_FAILED: ' + ADD_MESSAGE_FAILED);
 
 const INITIAL_STATE = {
   timeline: [],
@@ -32,6 +36,10 @@ export default (state = INITIAL_STATE, action) => {
         return { ...state, message: action.payload};
      case ADD_MESSAGE:
         return { ...state, message: ''};
+     case ADD_MESSAGE_SUCCESS:
+        return { ...state, message: ''};
+     case ADD_MESSAGE_FAILED:
+        return { ...state, err: 'failed post message to twitter!'}
      default:
         return state;
    }

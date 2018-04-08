@@ -10,10 +10,17 @@ import {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { showAddTweetDialog, messageChanged } from '../actions';
+import { showAddTweetDialog, messageChanged, addMessage } from '../actions';
 import { Layout, Section, Button } from '../components/common';
 
 class TweetAddDialog extends Component {
+
+    postMessage(){
+      const { tweet, addMessage } = this.props;
+      addMessage(tweet.message);
+    }
+
+
 
     render (){
       console.log('TweetAddDialog: props:', this.props);
@@ -32,12 +39,14 @@ class TweetAddDialog extends Component {
             <Section noSkin >
               <View style={styles.actionBarStyle}>
                   <Button onPress={ () => {this.props.showAddTweetDialog(false)} }><Text>close</Text></Button>
-                  <Button><Text>post</Text></Button>
+                  <Button onPress={this.postMessage.bind(this) }><Text>post</Text></Button>
               </View>
             </Section>
             <Section style={{flex:1}}>
               <TextInput
-                  onChangeText={ (text) => this.props.messageChanged({text})}
+                  onChangeText={ (text) => {
+                    this.props.messageChanged(text);
+                  }}
                   placeholder='What is happening?'
                   multiline = {true}
                   value={this.props.message}
@@ -58,7 +67,8 @@ const mapStateToProps = ({tweet}) => {
 export default connect(mapStateToProps,
   {
     showAddTweetDialog,
-    messageChanged
+    messageChanged,
+    addMessage
   })(TweetAddDialog);
 
 const styles = StyleSheet.create({

@@ -7,3 +7,5 @@ export const GET_USER_TIMELINE_FAILED = 'get_user_timeline_failed';
 export const SHOW_ADD_TWEET_DIALOG = 'show_add_tweet_dialog';
 export const MESSAGE_CHANGED = 'message_changed';
 export const ADD_MESSAGE = 'add_message';
+export const ADD_MESSAGE_SUCCESS = 'add_message_success';
+export const ADD_MESSAGE_FAILED = 'add_message_failed';
