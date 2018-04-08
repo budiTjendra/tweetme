@@ -10,5 +10,4 @@ export const MESSAGE_CHANGED = 'message_changed';
 export const ADD_MESSAGE = 'add_message';
 export const ADD_MESSAGE_SUCCESS = 'add_message_success';
 export const ADD_MESSAGE_FAILED = 'add_message_failed';
-export const LOADING = 'loading';
 export const RESET_ERROR = 'reset_error';

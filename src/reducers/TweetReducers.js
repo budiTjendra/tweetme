@@ -25,10 +25,6 @@ const INITIAL_STATE = {
   isShowTweetDialog: false,
   message: '',
   refreshTimeline: false,
-  loading: {
-    isLoading: false,
-    loadingType: ''
-  },
   err: ''
 }
 
@@ -36,7 +32,7 @@ export default (state = INITIAL_STATE, action) => {
    console.log('TweetReducers :' , action);
    switch(action.type){
      case GET_USER_TIMELINE:
-        return { ...state, loading: { isLoading: true, loadingType: GET_USER_TIMELINE }};
+        return { ...state, refreshTimeline: true};
      case GET_USER_TIMELINE_SUCCESS:
         console.log('reducers GET_USER_TIMELINE_SUCCESS:' , action.payload);
         return {

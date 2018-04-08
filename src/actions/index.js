@@ -13,7 +13,6 @@ import {
   ADD_MESSAGE,
   ADD_MESSAGE_SUCCESS,
   ADD_MESSAGE_FAILED,
-  LOADING,
   RESET_ERROR
 }from './types';
 
