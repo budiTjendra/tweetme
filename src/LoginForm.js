@@ -25,7 +25,7 @@ class LoginForm extends Component {
       }
     */}
 
-    console.log(this.props);
+    console.log('LoginForm:',this.props);
 
     return (
       <View style={styles.container}>
@@ -54,7 +54,7 @@ const mapStateToProps = ({ oauth }) => {
     //console.log('authorized:' + authorized);
   }
 
-  console.log('oauth:' + oauth);
+  console.log('LoginForm: oauth:' , oauth);
   //console.log('oauth.account:' + oauth.account);
   return { oauth };
 };

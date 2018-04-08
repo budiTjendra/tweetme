@@ -4,8 +4,47 @@ import {
   WAIT_FOR_LOGIN,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
-  GET_AUTHORIZED_ACCOUNT
+  GET_AUTHORIZED_ACCOUNT,
+  GET_USER_TIMELINE_SUCCESS,
+  GET_USER_TIMELINE_FAILED
 }from './types';
+
+export const getUserTimeline = () => {
+   console.log('action: getUserTimeline');
+
+   return (dispatch) => {
+
+     const manager = new OAuthManager('tweetme');
+     const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+
+     manager
+       .makeRequest('twitter', userTimelineUrl)
+       .then(resp => {
+          console.log('onGetUserTimelineSuccess');
+          console.log('Action: getUserTimeLine: Data ->', resp.data );
+          onGetUserTimelineSuccess(dispatch, resp.data);
+       })
+       .catch(err => {
+         onGetUserTimelineFailed(dispatch, 'failed in getUserTimeline');
+       });
+   };
+
+};
+
+const onGetUserTimelineSuccess = (dispatch, data) => {
+  console.log('onGetUserTimelineSuccess:',data);
+  dispatch ({
+     type: GET_USER_TIMELINE_SUCCESS,
+     payload: data
+  });
+};
+
+const onGetUserTimelineFailed = (dispatch, err) => {
+  dispatch({
+     type: GET_USER_TIMELINE_FAILED,
+     payload:err
+   });
+};
 
 export const signIn = () => {
     return (dispatch) => {
@@ -31,12 +70,17 @@ export const signIn = () => {
     };
 };
 
-const loginAccountSuccess = (dispatch, resp ) => {
+const loginAccountSuccess = (dispatch, account ) => {
    dispatch({
       type: LOGIN_SUCCESS,
-      payload:resp
+      payload:account
    });
    Actions.main();
+};
+
+const getResponse = (resp) => {
+  //assume array always return 0 size
+  return resp.accounts[0];
 };
 
 const loginAccountFailed = (dispatch, err) => {
@@ -44,31 +88,28 @@ const loginAccountFailed = (dispatch, err) => {
       type: LOGIN_FAILED,
       payload: err
   });
+  console.log('err:' + err);
 };
 
 export const getAuthorizedAccount = () => {
     console.log('getAuthorizedAccount');
     const manager = new OAuthManager('tweetme');
-    /*
-    manager.savedAccounts()
-      .then(resp => {
-        console.log('action: account list: ', resp.accounts);
-      })*/
 
-      return (dispatch) => {
-        manager.savedAccounts()
-          .then(resp => {
-            console.log('action: account list size: ', resp.accounts.length);
-            console.log('action: account list: ', resp.accounts);
-            if (resp.accounts.length === 0){
-              loginAccountFailed(dispatch, resp);
-            }else{
-              loginAccountSuccess(dispatch, resp);
-            }
+    return (dispatch) => {
+      manager.savedAccounts()
+        .then(resp => {
+          console.log('action: account list size: ', resp.accounts.length);
+          console.log('action: account list: ', resp.accounts);
 
+          if (resp.accounts.length === 0){
+            loginAccountFailed(dispatch, 'account list from getAuthorizedAccount is empty');
+          }else{
+            const account = getResponse(resp);
+            loginAccountSuccess(dispatch, account);
+          }
+        })
+    };
 
-          })
-      };
 
     /*
     return {

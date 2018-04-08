@@ -24,16 +24,6 @@ class RouterComponent extends Component {
   }
 
   render() {
-    const manager = new OAuthManager('tweetme');
-
-    manager.savedAccounts()
-      .then(resp => {
-        console.log('Router: account list: ', resp.accounts);
-      })
-
-    console.log('======');
-    console.log(this.props);
-
     return (
       <Router>
         <Scene key="root" hideNavBar>
@@ -41,7 +31,7 @@ class RouterComponent extends Component {
             <Scene key="login" component={LoginForm} title="Please Login"/>
           </Scene>
           <Scene key="main">
-            <Scene key="home" component={Home} />
+            <Scene key="home" component={Home} title='Timeline'/>
           </Scene>
         </Scene>
       </Router>
