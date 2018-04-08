@@ -6,16 +6,18 @@ import {
   Text,
   StyleSheet,
   ScrollView,
+  Modal,
+  TouchableHighlight
 } from 'react-native';
 import { connect } from 'react-redux';
 import OAuthManager from 'react-native-oauth';
-import { getUserTimeline } from './actions';
+import { getUserTimeline, showAddTweetDialog } from './actions';
 import { Layout, Section } from './components/common';
+import TweetAddDialog from './components/TweetAddDialog';
 
 class Home extends Component {
   componentDidMount(){
-      console.log('home: componentDidMount',this.props.getUserTimeline());
-
+      console.log('home: componentDidMount: ',this.props);
       this.props.getUserTimeline();
   }
 
@@ -30,12 +32,13 @@ class Home extends Component {
      );
   }
 
+
   render() {
     const { text } = this.props.tweet;
     console.log('home: props:', this.props);
-
     return (
       <Layout>
+          <TweetAddDialog />
         <ScrollView>
           {this.renderTimeline()}
         </ScrollView>
@@ -51,7 +54,11 @@ const mapStateToProps = ( {tweet} )=> {
   return { tweet };
 }
 
-export default connect(mapStateToProps, {getUserTimeline})(Home);
+export default connect(mapStateToProps,
+  {
+    getUserTimeline,
+    showAddTweetDialog
+  })(Home);
 
 const styles = StyleSheet.create({
   container: {

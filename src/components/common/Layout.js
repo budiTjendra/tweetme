@@ -6,12 +6,12 @@ import {
 } from 'react-native';
 
 const Layout = (props) => (
-  <View style={styles.container}>
+  <View style={[styles.container, props.style]}>
     {props.children}
   </View>
 );
 
-export { Layout };
+
 
 const styles = {
   container: {
@@ -19,3 +19,5 @@ const styles = {
     backgroundColor: 'white'
   },
 };
+
+export { Layout };

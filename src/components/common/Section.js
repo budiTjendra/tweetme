@@ -8,7 +8,7 @@ import {
 const Section = (props) => {
   const sectionStyle = props.noSkin ? styles.noSkinLayoutStyle : styles.layoutStyle;
   return (
-    <View style={sectionStyle}>
+    <View style={[sectionStyle, props.style]}>
       { props.children }
     </View>
   );

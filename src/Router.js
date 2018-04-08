@@ -6,12 +6,14 @@ import {
   View,
   Text,
   StyleSheet,
+  Modal,
+  TouchableHighlight
 } from 'react-native';
 import HomePage from './HomePage';
 import LoginForm from './LoginForm';
 import OAuthManager from 'react-native-oauth';
 import { connect } from 'react-redux';
-import { getAuthorizedAccount } from './actions';
+import { getAuthorizedAccount, showAddTweetDialog } from './actions';
 
 class RouterComponent extends Component {
   componentDidMount(){
@@ -23,7 +25,9 @@ class RouterComponent extends Component {
     console.log('component did update');
   }
 
+
   render() {
+
     return (
       <Router>
         <Scene key="root" hideNavBar>
@@ -33,7 +37,7 @@ class RouterComponent extends Component {
           <Scene key="main">
             <Scene
                 rightTitle="Post Tweet"
-                onRight={ () => { console.log('right') }}
+                onRight={ () => { this.props.showAddTweetDialog(true) }}
                 key="home"
                 component={HomePage}
                 title='Timeline'/>
@@ -45,7 +49,7 @@ class RouterComponent extends Component {
 }
 
 
-export default connect(null, { getAuthorizedAccount } )(RouterComponent);
+export default connect(null, { getAuthorizedAccount,showAddTweetDialog } )(RouterComponent);
 
 const styles = StyleSheet.create({
   container: {

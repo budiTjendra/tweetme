@@ -6,8 +6,38 @@ import {
   LOGIN_FAILED,
   GET_AUTHORIZED_ACCOUNT,
   GET_USER_TIMELINE_SUCCESS,
-  GET_USER_TIMELINE_FAILED
+  GET_USER_TIMELINE_FAILED,
+  SHOW_ADD_TWEET_DIALOG,
+  MESSAGE_CHANGED
 }from './types';
+
+
+export const messageChanged = (text) => {
+  console.log('action: messageChanged', text);
+  
+  return {
+    type: MESSAGE_CHANGED,
+    payload: text
+  }
+};
+
+export const showAddTweetDialog = (isVisible) => {
+  console.log('action: showAddTweetDialog', isVisible);
+
+  return {
+    type: SHOW_ADD_TWEET_DIALOG,
+    payload: isVisible
+  };
+
+  /*
+  return (dispatch) =>{
+    dispatch({
+       type: SHOW_ADD_TWEET_DIALOG,
+       payload:isVisible
+    });
+  };*/
+
+};
 
 export const getUserTimeline = () => {
    console.log('action: getUserTimeline');
