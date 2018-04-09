@@ -137,6 +137,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-twitter')
     compile project(':react-native-oauth')
     compile project(':react-native-media-meta')
     compile project(':react-native-vector-icons')

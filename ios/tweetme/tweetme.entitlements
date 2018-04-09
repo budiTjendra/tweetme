@@ -6,5 +6,9 @@
 	<array>
 		<string>webcredentials:example.com</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array>
+		<string>$(AppIdentifierPrefix)io.fullstack.oauth.AUTH_MANAGER</string>
+	</array>
 </dict>
 </plist>

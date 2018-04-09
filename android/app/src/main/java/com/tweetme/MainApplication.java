@@ -3,6 +3,7 @@ package com.tweetme;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import ga.piroro.rnt.RNTPackage;
 import io.fullstack.oauth.OAuthManagerPackage;
 import com.mybigday.rnmediameta.RNMediaMetaPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -26,6 +27,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNTPackage(),
             new OAuthManagerPackage(),
             new RNMediaMetaPackage(),
             new VectorIconsPackage()

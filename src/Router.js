@@ -7,7 +7,8 @@ import {
   Text,
   StyleSheet,
   Modal,
-  TouchableHighlight
+  TouchableHighlight,
+  Alert
 } from 'react-native';
 import HomePage from './HomePage';
 import LoginForm from './LoginForm';
@@ -25,6 +26,20 @@ class RouterComponent extends Component {
     console.log('component did update');
   }
 
+  doLogout(){
+    console.log('Router: props:' ,this.props);
+
+    Alert.alert(
+      'Alert Title',
+      'Are your sure want to logout from Tweetme? ',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
+  }
+
 
   render() {
 
@@ -38,6 +53,8 @@ class RouterComponent extends Component {
             <Scene
                 rightTitle="Post Tweet"
                 onRight={ () => { this.props.showAddTweetDialog(true) }}
+                leftTitle="Logout"
+                onLeft={ () => { this.doLogout()}}
                 key="home"
                 component={HomePage}
                 title='Timeline'/>
@@ -49,7 +66,12 @@ class RouterComponent extends Component {
 }
 
 
-export default connect(null, { getAuthorizedAccount,showAddTweetDialog } )(RouterComponent);
+
+const mapStateToProps = ({ oauth }) => {
+  return { oauth };
+};
+
+export default connect(mapStateToProps, { getAuthorizedAccount,showAddTweetDialog } )(RouterComponent);
 
 const styles = StyleSheet.create({
   container: {
