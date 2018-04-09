@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'F8060DABBACC4E712F691ABE4C2F3866'
+               BlueprintIdentifier = '073CE0154758777B2E46C5CBFE578C54'
                BlueprintName = 'DCTAuth'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'libDCTAuth.a'>
+               BuildableName = 'DCTAuth.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

@@ -4,7 +4,7 @@
 target 'tweetme' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
-  pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
+
   # Pods for tweetme
 
   target 'tweetme-tvOSTests' do
@@ -18,3 +18,9 @@ target 'tweetme' do
   end
 
 end
+
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'DCTAuth', :git => 'https://github.com/danielctull/DCTAuth.git'
