@@ -10,7 +10,7 @@ import {
   TextInput
 } from 'react-native';
 import { connect } from 'react-redux';
-import { showAddTweetDialog, messageChanged, addMessage } from '../actions';
+import { showAddTweetDialog, messageChanged, addMessage , resetError } from '../actions';
 import { Layout, Section, Button } from '../components/common';
 
 class TweetAddDialog extends Component {
