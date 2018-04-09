@@ -13,8 +13,20 @@ import {
   ADD_MESSAGE,
   ADD_MESSAGE_SUCCESS,
   ADD_MESSAGE_FAILED,
-  RESET_ERROR
+  RESET_ERROR,
+  LOGOUT
 }from './types';
+
+export const logout=()=>{
+  console.log('action: logout');
+
+  const manager = new OAuthManager('tweetme');
+  manager.deauthorize('twitter');
+
+  return {
+    type: LOGOUT
+  }
+};
 
 export const resetError = ()=>{
    console.log('action: resetError');
@@ -108,7 +120,7 @@ const onGetUserTimeline = (dispatch) =>
   });
 
   const manager = new OAuthManager('tweetme');
-  const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
+  const userTimelineUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json?include_entities=true';
 
   manager
     .makeRequest('twitter', userTimelineUrl)
@@ -175,11 +187,12 @@ const getResponse = (resp) => {
 };
 
 const loginAccountFailed = (dispatch, err) => {
+  console.log('Action: loginAccountFailed: err:' + err);
   dispatch({
       type: LOGIN_FAILED,
       payload: err
   });
-  console.log('err:' + err);
+
 };
 
 export const getAuthorizedAccount = () => {

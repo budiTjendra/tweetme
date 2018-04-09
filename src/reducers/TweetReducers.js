@@ -7,7 +7,8 @@ import {
   MESSAGE_CHANGED,
   ADD_MESSAGE_SUCCESS,
   ADD_MESSAGE_FAILED,
-  RESET_ERROR
+  RESET_ERROR,
+  LOGOUT
 } from '../actions/types';
 
 console.log('check GET_USER_TIMELINE: ' + GET_USER_TIMELINE);
@@ -19,6 +20,7 @@ console.log('check MESSAGE_CHANGED: ' + MESSAGE_CHANGED);
 console.log('check ADD_MESSAGE_SUCCESS: ' + ADD_MESSAGE_SUCCESS);
 console.log('check ADD_MESSAGE_FAILED: ' + ADD_MESSAGE_FAILED);
 console.log('check RESET_ERROR: ' + RESET_ERROR);
+console.log('check LOGOUT: ' + LOGOUT);
 
 const INITIAL_STATE = {
   timeline: [],

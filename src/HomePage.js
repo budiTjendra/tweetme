@@ -26,15 +26,9 @@ import TweetAddDialog from './components/TweetAddDialog';
 class Home extends Component {
   constructor(props){
     super(props);
-    this.state = {
-      refreshing: false,
-    };
   }
 
-
-
   _onRefresh(){
-    this.setState({ refreshing: true });
 
     const { getUserTimeline } = this.props;
     getUserTimeline();
@@ -45,8 +39,6 @@ class Home extends Component {
     const { getUserTimeline, tweet } = this.props;
 
     console.log('home: componentDidMount: props:',this.props);
-
-    this.setState({users: this.props.tweet.timeline.user});
     console.log('home: componentDidMount: state:',this.state);
 
     getUserTimeline();
@@ -63,13 +55,10 @@ class Home extends Component {
                     {this.renderAvatar(item)}
                   </View>
 
-
                   <View style={{flex:1}}>
                     { this.renderTweetMessage(item) }
                   </View>
-
                </View>
-
              </Section>
 
         );
@@ -77,29 +66,25 @@ class Home extends Component {
 
 
   renderTweetLink(item){
-    console.log(item.entities.urls.length);
     if (item.entities.urls.length === 1){
-      console.log('rendering');
-
       return (
         <TouchableHighlight onPress={() => Linking.openURL(item.entities.urls[0].expanded_url)}  >
           <Text style={{color:'blue'}}>{item.entities.urls[0].display_url}</Text>
         </TouchableHighlight>
       );
-
     }
-
   }
 
   renderTweetMessage(item){
     const { text, created_at} = item.retweeted ? item.retweeted_status : item;
     const { name, screen_name } = item.retweeted ? item.retweeted_status.user : item.user;
 
+    /*
     if (item.retweeted)
       console.log('test user:',item.retweeted_status.user.name);
     else {
         console.log('test user:',item.user.name);
-    }
+    }*/
 
     return (
       <View style={styles.avatarTopStyle}>
