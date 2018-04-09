@@ -40,18 +40,10 @@ export default (state = INITIAL_STATE, action) => {
           err: '',
           timeline: action.payload,
           refreshTimeline: false,
-          loading:{
-            isLoading:false,
-            loadingType: ''
-          }
         };
      case GET_USER_TIMELINE_FAILED:
         return { ...state,
           err: action.payload,
-          loading:{
-            isLoading:false,
-            loadingType: ''
-          }
         };
      case SHOW_ADD_TWEET_DIALOG:
         return { ...state, isShowTweetDialog: action.payload};
