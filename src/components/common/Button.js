@@ -21,7 +21,7 @@ const Button = (props) => {
 
 const styles = {
   default: {
-    backgroundColor: 'red',
+    backgroundColor: 'white',
   },
 };
 
