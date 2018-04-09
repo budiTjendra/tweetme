@@ -41,7 +41,11 @@ class Home extends Component {
     console.log('home: componentDidMount: props:',this.props);
     console.log('home: componentDidMount: state:',this.state);
 
-    getUserTimeline();
+    //only load when user is stil login into the app
+    if (this.props.oauth.account != ''){
+      getUserTimeline();
+    }
+
 
   }
 
@@ -274,10 +278,10 @@ class Home extends Component {
   }
 }
 
-const mapStateToProps = ( {tweet} )=> {
+const mapStateToProps = ( {tweet , oauth} )=> {
   console.log('home: mapStateToProps: props:', this.props);
   const showAlert = tweet.err != null && tweet.err != '' ;
-  return { tweet , showAlert };
+  return { tweet , showAlert , oauth};
 }
 
 export default connect(mapStateToProps,

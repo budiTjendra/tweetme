@@ -35,7 +35,7 @@ class RouterComponent extends Component {
     console.log('Router: props:' ,this.props);
 
     Alert.alert(
-      'Alert Title',
+      'Alert',
       'Are your sure want to logout from Tweetme? ',
       [
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
