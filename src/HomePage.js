@@ -10,10 +10,14 @@ import {
   TouchableHighlight,
   RefreshControl,
   Alert,
-  TextInput
+  TextInput,
+  Image,
+  Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { Avatar } from 'react-native-elements'
 import OAuthManager from 'react-native-oauth';
+import Moment from 'moment';
 import { getUserTimeline, showAddTweetDialog, addMessage , messageChanged ,resetError} from './actions';
 import { Layout, Section, Button } from './components/common';
 import TweetAddDialog from './components/TweetAddDialog';
@@ -27,6 +31,8 @@ class Home extends Component {
     };
   }
 
+
+
   _onRefresh(){
     this.setState({ refreshing: true });
 
@@ -35,8 +41,14 @@ class Home extends Component {
   }
 
   componentDidMount(){
-    console.log('home: componentDidMount: ',this.props);
+
     const { getUserTimeline, tweet } = this.props;
+
+    console.log('home: componentDidMount: props:',this.props);
+
+    this.setState({users: this.props.tweet.timeline.user});
+    console.log('home: componentDidMount: state:',this.state);
+
     getUserTimeline();
 
   }
@@ -44,12 +56,92 @@ class Home extends Component {
   renderTimeline(){
     console.log('test:',this.props.tweet.timeline);
         return this.props.tweet.timeline.map(
-           item =>
+           (item, index) =>
              <Section key={item.id}>
-               <Text> { item.text } </Text>
+               <View style={{ flexDirection: 'row' , alignItems:'center'}}>
+
+                  {this.renderAvatar(item)}
+
+                  <View style={{flex:1}}>
+                    { this.renderTweetMessage(item) }
+                  </View>
+
+               </View>
+
              </Section>
 
         );
+  }
+
+
+  renderTweetLink(item){
+    console.log(item.entities.urls.length);
+    if (item.entities.urls.length === 1){
+      console.log('rendering');
+
+      return (
+        <TouchableHighlight onPress={() => Linking.openURL(item.entities.urls[0].expanded_url)}  >
+          <Text style={{color:'blue'}}>{item.entities.urls[0].display_url}</Text>
+        </TouchableHighlight>
+      );
+
+    }
+
+  }
+
+  renderTweetMessage(item){
+    const { text, created_at} = item.retweeted ? item.retweeted_status : item;
+    const { name, screen_name } = item.retweeted ? item.retweeted_status.user : item.user;
+
+    if (item.retweeted)
+      console.log('test user:',item.retweeted_status.user.name);
+    else {
+        console.log('test user:',item.user.name);
+    }
+
+    return (
+      <View style={{paddingLeft: 10 }}>
+        { this.renderRetweetedFlag(item) }
+        <View style={{ flexDirection: 'row'}}>
+          <Text>{name}</Text>
+          <Text style={{color:'gray'}}>@{screen_name}</Text>
+          <Text style={{color:'gray', fontSize: 13}}> . {Moment(created_at).format('DD/MM/YYYY')}</Text>
+        </View>
+        <Text>{text}</Text>
+
+        <View style={{paddingTop:10}}>
+          { this.renderTweetLink(item) }
+        </View>
+
+        <View style={{ flexDirecton:'row', justifyContent:'space-around' }}>
+          { this.renderRetweetCount(item)}
+        </View>
+      </View>
+
+    );
+  }
+
+  renderRetweetCount(item){
+    if (item.retweet_count)
+      return(<Text>R:{item.retweet_count}</Text>);
+  }
+
+  renderAvatar(item){
+    const { profile_image_url_https }  = item.retweeted? item.retweeted_status.user : item.user;
+    return(
+      <Avatar
+        small
+        rounded
+        source={{uri: profile_image_url_https}}
+        onPress={() => console.log("Works!")}
+        activeOpacity={0.7}
+      />
+    );
+  }
+
+  renderRetweetedFlag(item){
+     if (item.retweeted)
+      return (<Text style={{color:'gray', fontSize:10}}>You Retweeted</Text>);
   }
 
   onTweetDialogClosed(){
@@ -74,8 +166,18 @@ class Home extends Component {
           <Layout style={styles.container}>
             <Section noSkin >
               <View style={styles.actionBarStyle}>
-                  <Button onPress={ () => {this.props.showAddTweetDialog(false)} }><Text>close</Text></Button>
-                  <Button onPress={this.postMessage.bind(this) }><Text>post</Text></Button>
+                  <Button onPress={ () => {this.props.showAddTweetDialog(false)} }>
+                      <Image
+                        source={require('../assets/exit_icon.png')}
+                        style={styles.closeIconStyle}
+                      />
+                  </Button>
+                  <Button onPress={this.postMessage.bind(this) }>
+                      <Image
+                        source={require('../assets/add_tweet.png')}
+                        style={styles.closeIconStyle}
+                      />
+                  </Button>
               </View>
               </Section>
               <Section style={{flex:1}}>
@@ -110,7 +212,11 @@ class Home extends Component {
 
   render() {
     console.log('home: props:', this.props);
+
+    Moment.locale('en');
     this.renderAlert();
+
+
     return (
       <Layout>
 
@@ -135,6 +241,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = ( {tweet} )=> {
+  console.log('home: mapStateToProps: props:', this.props);
   const showAlert = tweet.err != null && tweet.err != '' ;
   return { tweet , showAlert };
 }
@@ -150,11 +257,19 @@ export default connect(mapStateToProps,
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor:'gray',
+    backgroundColor:'white',
     marginTop:5
   },
   actionBarStyle:{
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  closeIconStyle:{
+    width:30,
+    height:30
+  },
+  tweetIconStyle:{
+    width:50,
+    height:50
   }
 });
