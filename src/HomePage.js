@@ -58,9 +58,11 @@ class Home extends Component {
         return this.props.tweet.timeline.map(
            (item, index) =>
              <Section key={item.id}>
-               <View style={{ flexDirection: 'row' , alignItems:'center'}}>
+               <View style={{ flexDirection: 'row' }}>
+                  <View style={{paddingRight:5}}>
+                    {this.renderAvatar(item)}
+                  </View>
 
-                  {this.renderAvatar(item)}
 
                   <View style={{flex:1}}>
                     { this.renderTweetMessage(item) }
@@ -100,7 +102,7 @@ class Home extends Component {
     }
 
     return (
-      <View style={{paddingLeft: 10 }}>
+      <View style={styles.avatarTopStyle}>
         { this.renderRetweetedFlag(item) }
         <View style={{ flexDirection: 'row'}}>
           <Text>{name}</Text>
@@ -113,8 +115,11 @@ class Home extends Component {
           { this.renderTweetLink(item) }
         </View>
 
-        <View style={{ flexDirecton:'row', justifyContent:'space-around' }}>
+        <View style={{
+          flexDirection: 'row' ,
+          paddingTop:10}}>
           { this.renderRetweetCount(item)}
+          { this.renderFavoriteCount(item)}
         </View>
       </View>
 
@@ -123,11 +128,55 @@ class Home extends Component {
 
   renderRetweetCount(item){
     if (item.retweet_count)
-      return(<Text>R:{item.retweet_count}</Text>);
+      return(
+        <Text style={styles.actionIconStyle}>
+          <Image
+              source={require('../assets/retweet.png')}
+              style={{width:14, height:14}}
+          />
+            &nbsp;{item.retweet_count}
+        </Text>
+      );
+  }
+
+  renderFavoriteCount(item){
+    const { favorite_count } = item.retweeted ? item.retweeted_status : item;
+    if (favorite_count != 0)
+      return(
+        <Text style={styles.actionIconStyle}>
+            <Image
+                source={require('../assets/love_black.png')}
+                style={{width:12, height:12 , paddingRight:5}}
+            />
+                &nbsp;{favorite_count}
+        </Text>
+      );
+
   }
 
   renderAvatar(item){
     const { profile_image_url_https }  = item.retweeted? item.retweeted_status.user : item.user;
+    if (item.retweeted){
+      return(
+        <View>
+          <View style={styles.avatarTopStyle}>
+            <Image
+                source={require('../assets/retweet.png')}
+                style={{width:10, height:10 , alignSelf:'flex-end'}}
+            />
+          </View>
+
+          <Avatar
+            small
+            rounded
+            source={{uri: profile_image_url_https}}
+            onPress={() => console.log("Works!")}
+            activeOpacity={0.7}
+          />
+        </View>
+      );
+
+    }
     return(
       <Avatar
         small
@@ -262,7 +311,6 @@ const styles = StyleSheet.create({
   },
   actionBarStyle:{
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   closeIconStyle:{
     width:30,
@@ -271,5 +319,12 @@ const styles = StyleSheet.create({
   tweetIconStyle:{
     width:50,
     height:50
+  },
+  actionIconStyle:{
+    marginRight:50
+  },
+  avatarTopStyle:{
+    paddingBottom:5
+
   }
 });
