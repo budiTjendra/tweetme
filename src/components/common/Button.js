@@ -7,11 +7,10 @@ import {
 
 const Button = (props) => {
   const { onPress } = props;
-  const buttonStyle = props.style ? props.style : styles.default;
 
   console.log(props);
   return (
-    <TouchableOpacity onPress={onPress} style={buttonStyle}>
+    <TouchableOpacity onPress={onPress} style={[styles.default, props.style]}>
       {props.children}
     </TouchableOpacity>
   );
@@ -21,7 +20,10 @@ const Button = (props) => {
 
 const styles = {
   default: {
-    backgroundColor: 'white',
+    backgroundColor: '#1a97f0',
+    borderRadius: 13,
+    padding: 5,
+    alignSelf: 'center'
   },
 };
 

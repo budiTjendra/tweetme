@@ -79,6 +79,60 @@ class Home extends Component {
     }
   }
 
+
+
+  renderDateDisplay(created_at){
+
+
+    const days_created_at = Moment(created_at).format('D');
+    const hours_created_at = Moment(created_at).format('H');
+    const mins_created_at = Moment(created_at).format('m');
+    const secs_created_at = Moment(created_at).format('s')
+
+    const now = Moment();
+
+    const days_now = Moment(now).format('D')
+    const hours_now = Moment(now).format('H');
+    const mins_now = Moment(now).format('m')
+    const secs_now = Moment(now).format('s')
+
+    const total_days = days_now - days_created_at;
+
+
+
+    if( total_days === 0 ){
+      const total_hours = hours_now - hours_created_at;
+      if (total_hours === 0){
+        const total_mins = mins_now - mins_created_at;
+
+        if(total_mins === 0){
+          const total_secs = secs_now - secs_created_at;
+          return total_secs + 's';
+        }
+
+        return  total_mins + 'm';
+      }
+
+      console.log('today post :  mins_created_at' + mins_created_at + ' mins_now:' + mins_now);
+      console.log(mins_now - mins_created_at);
+
+      return total_hours + 'h';
+    }
+
+    
+    /*
+    console.log('total years:',
+        Moment(now) -  Moment(created_at));
+
+    if(total_days<= 6 && total_days >= 1){
+
+      return total_days + 'd';
+    }
+
+    console.log('total days:', total_days);
+    */
+    return Moment(created_at).format('DD/MM/YY');
+  }
   renderTweetMessage(item){
     const { text, created_at} = item.retweeted ? item.retweeted_status : item;
     const { name, screen_name } = item.retweeted ? item.retweeted_status.user : item.user;
@@ -90,13 +144,19 @@ class Home extends Component {
         console.log('test user:',item.user.name);
     }*/
 
+
+
+
+
+  //  console.log('Home: hours:' , hours);
+
     return (
       <View style={styles.avatarTopStyle}>
         { this.renderRetweetedFlag(item) }
         <View style={{ flexDirection: 'row'}}>
           <Text>{name}</Text>
           <Text style={{color:'gray'}}>@{screen_name}</Text>
-          <Text style={{color:'gray', fontSize: 13}}> . {Moment(created_at).format('DD/MM/YYYY')}</Text>
+          <Text style={{color:'gray', fontSize: 13}}> . {this.renderDateDisplay(created_at)}</Text>
         </View>
         <Text>{text}</Text>
 
@@ -204,17 +264,11 @@ class Home extends Component {
           <Layout style={styles.container}>
             <Section noSkin >
               <View style={styles.actionBarStyle}>
-                  <Button onPress={ () => {this.props.showAddTweetDialog(false)} }>
-                      <Image
-                        source={require('../assets/exit_icon.png')}
-                        style={styles.closeIconStyle}
-                      />
+                  <Button style={{backgroundColor:'white'}} onPress={ () => {this.props.showAddTweetDialog(false)}}>
+                      <Text>Close</Text>
                   </Button>
                   <Button onPress={this.postMessage.bind(this) }>
-                      <Image
-                        source={require('../assets/add_tweet.png')}
-                        style={styles.closeIconStyle}
-                      />
+                      <Text style={{color:'white'}}>Tweet</Text>
                   </Button>
               </View>
               </Section>
@@ -300,6 +354,7 @@ const styles = StyleSheet.create({
   },
   actionBarStyle:{
     flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   closeIconStyle:{
     width:30,
