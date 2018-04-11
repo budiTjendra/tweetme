@@ -86,6 +86,7 @@ class Home extends Component {
 
 
   renderDateDisplay(created_at){
+    const months_created_at = Moment(created_at).format('M');
     const days_created_at = Moment(created_at).format('D');
     const hours_created_at = Moment(created_at).format('H');
     const mins_created_at = Moment(created_at).format('m');
@@ -93,13 +94,13 @@ class Home extends Component {
 
     const now = Moment();
 
+    const months_now = Moment(now).format('M');
     const days_now = Moment(now).format('D')
     const hours_now = Moment(now).format('H');
     const mins_now = Moment(now).format('m')
     const secs_now = Moment(now).format('s')
 
     const total_days = days_now - days_created_at;
-
     if( total_days === 0 ){
       const total_hours = hours_now - hours_created_at;
       if (total_hours === 0){
@@ -109,7 +110,6 @@ class Home extends Component {
           const total_secs = secs_now - secs_created_at;
           return total_secs + 's';
         }
-
         return  total_mins + 'm';
       }
 
@@ -118,19 +118,10 @@ class Home extends Component {
 
       return total_hours + 'h';
     }
-
-
-    /*
-    console.log('total years:',
-        Moment(now) -  Moment(created_at));
-
-    if(total_days<= 6 && total_days >= 1){
-
+    else if(total_days<= 6 && total_days >= 1){
       return total_days + 'd';
     }
 
-    console.log('total days:', total_days);
-    */
     return Moment(created_at).format('DD/MM/YY');
   }
 
@@ -139,14 +130,6 @@ class Home extends Component {
   renderTweetMessage(item){
     const { text, created_at} = item.retweeted ? item.retweeted_status : item;
     const { name, screen_name } = item.retweeted ? item.retweeted_status.user : item.user;
-
-    /*
-    if (item.retweeted)
-      console.log('test user:',item.retweeted_status.user.name);
-    else {
-        console.log('test user:',item.user.name);
-    }*/
-  //  console.log('Home: hours:' , hours);
 
     return (
       <View style={styles.avatarTopStyle} >
