@@ -12,19 +12,13 @@ import {
 } from 'react-native';
 import HomePage from './HomePage';
 import LoginForm from './LoginForm';
+import Test2 from './Test2';
 import OAuthManager from 'react-native-oauth';
 import { connect } from 'react-redux';
 import { getAuthorizedAccount, showAddTweetDialog, logout } from './actions';
 
 class RouterComponent extends Component {
-  componentDidMount(){
-    this.props.getAuthorizedAccount();
-    console.log('component did mount');
-  }
 
-  componentDidUpdate(){
-    console.log('component did update');
-  }
 
   doLogout(){
      this.props.logout();

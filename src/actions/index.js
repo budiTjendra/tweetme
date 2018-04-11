@@ -160,6 +160,7 @@ export const signIn = () => {
             consumer_secret: 'G8AwgOxoi0KwL5vh2DY3fUELgF50qOzm6ebF0ctYAtlFGUVbGx'
           }
         });
+        manager.deauthorize('twitter');
         manager.authorize('twitter')
         .then(response  =>
         {
@@ -170,6 +171,7 @@ export const signIn = () => {
             console.log('dispatch loginAccountFailed');
             loginAccountFailed(dispatch, err);
         });
+
     };
 };
 

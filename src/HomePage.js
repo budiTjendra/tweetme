@@ -13,6 +13,7 @@ import {
   TextInput,
   Image,
   Linking,
+  LayoutAnimation
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Avatar } from 'react-native-elements'
@@ -22,14 +23,9 @@ import { getUserTimeline, showAddTweetDialog, addMessage , messageChanged ,reset
 import { Layout, Section, Button } from './components/common';
 import TweetAddDialog from './components/TweetAddDialog';
 
-
 class Home extends Component {
-  constructor(props){
-    super(props);
-  }
 
   _onRefresh(){
-
     const { getUserTimeline } = this.props;
     getUserTimeline();
   }
@@ -37,7 +33,6 @@ class Home extends Component {
   componentDidMount(){
 
     const { getUserTimeline, tweet } = this.props;
-
     console.log('home: componentDidMount: props:',this.props);
     console.log('home: componentDidMount: state:',this.state);
 
@@ -45,29 +40,38 @@ class Home extends Component {
     if (this.props.oauth.account != ''){
       getUserTimeline();
     }
+  }
 
 
+  renderTweetItem(item){
+    return (
+      <Section key={item.id}>
+        <View style={{ flexDirection: 'row' }}>
+           <View style={{paddingRight:5}}>
+             {this.renderAvatar(item)}
+           </View>
+           <View style={{flex:1}}>
+             { this.renderTweetMessage(item) }
+           </View>
+        </View>
+      </Section>
+
+    );
   }
 
   renderTimeline(){
+    const config = {
+      velocityThreshold: 0.3,
+      directionalOffsetThreshold: 80
+    };
     console.log('test:',this.props.tweet.timeline);
         return this.props.tweet.timeline.map(
            (item, index) =>
-             <Section key={item.id}>
-               <View style={{ flexDirection: 'row' }}>
-                  <View style={{paddingRight:5}}>
-                    {this.renderAvatar(item)}
-                  </View>
-
-                  <View style={{flex:1}}>
-                    { this.renderTweetMessage(item) }
-                  </View>
-               </View>
-             </Section>
-
+           <View style={{flex:1}} key={item.id}>
+             { this.renderTweetItem(item) }
+           </View>
         );
   }
-
 
   renderTweetLink(item){
     if (item.entities.urls.length === 1){
@@ -82,8 +86,6 @@ class Home extends Component {
 
 
   renderDateDisplay(created_at){
-
-
     const days_created_at = Moment(created_at).format('D');
     const hours_created_at = Moment(created_at).format('H');
     const mins_created_at = Moment(created_at).format('m');
@@ -97,8 +99,6 @@ class Home extends Component {
     const secs_now = Moment(now).format('s')
 
     const total_days = days_now - days_created_at;
-
-
 
     if( total_days === 0 ){
       const total_hours = hours_now - hours_created_at;
@@ -119,7 +119,7 @@ class Home extends Component {
       return total_hours + 'h';
     }
 
-    
+
     /*
     console.log('total years:',
         Moment(now) -  Moment(created_at));
@@ -133,6 +133,9 @@ class Home extends Component {
     */
     return Moment(created_at).format('DD/MM/YY');
   }
+
+
+
   renderTweetMessage(item){
     const { text, created_at} = item.retweeted ? item.retweeted_status : item;
     const { name, screen_name } = item.retweeted ? item.retweeted_status.user : item.user;
@@ -143,15 +146,10 @@ class Home extends Component {
     else {
         console.log('test user:',item.user.name);
     }*/
-
-
-
-
-
   //  console.log('Home: hours:' , hours);
 
     return (
-      <View style={styles.avatarTopStyle}>
+      <View style={styles.avatarTopStyle} >
         { this.renderRetweetedFlag(item) }
         <View style={{ flexDirection: 'row'}}>
           <Text>{name}</Text>
@@ -304,15 +302,11 @@ class Home extends Component {
 
   render() {
     console.log('home: props:', this.props);
-
     Moment.locale('en');
     this.renderAlert();
 
-
     return (
       <Layout>
-
-
         {this.renderModal()}
 
         <ScrollView
@@ -327,8 +321,6 @@ class Home extends Component {
 
       </Layout>
     );
-
-
   }
 }
 
