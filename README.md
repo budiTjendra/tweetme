@@ -1,6 +1,8 @@
 # tweetme
 simple tweeter playground app
 
+Steps to run the App:
+
 01. Open terminal in the project directory and type npm start
 02. Replace some code in library as follow:
 
