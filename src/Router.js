@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import HomePage from './HomePage';
 import LoginForm from './LoginForm';
-import Test2 from './Test2';
 import OAuthManager from 'react-native-oauth';
 import { connect } from 'react-redux';
 import { getAuthorizedAccount, showAddTweetDialog, logout } from './actions';
